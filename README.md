@@ -20,11 +20,13 @@ Proyecto desarrollado en equipo para el RETO nº 1, implementando el clásico ju
 
 ## 📦 Instalación y Configuración:
 
-1. **Descargar** el repositorio en vuestro equipo.
-2. Abrir una terminal en la carpeta del proyecto.
-3. Instalar las dependencias necesarias ejecutando:
-   ```bash
-   pip install -r requirements.txt
+1. #### Instalar Python en su ordenador (si no lo tiene).
+2. Abrir la terminal
+3. Ejecutar:
+   #### pip install -r requirements.txt para instalar numpy.
+5. Ejecutar el juego con:
+   #### python main.py.
+
    
 ## 🕹️ Instrucciones del juego:
 
