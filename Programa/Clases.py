@@ -1,8 +1,28 @@
 from variables import *
+
+#definimos las coordenadas del tablero
+
+def texto_a_coordenada(texto, tamanio=TAMANIO_TABLERO):
+    
+    limpio = texto.strip().upper().replace(',', '').replace(' ', '')  # convertimos a mayúsculas y eliminamos espacios y comas
+    if len(limpio) < 2 or not limpio[0].isalpha() or not limpio[1:].isdigit():  #"""coordenadas alfanumericas izq numero dcha"""
+        return None
+    columna = ord(limpio[0]) - ord('A')  #columna como la letra convertida a número 
+    fila = int(limpio[1:]) - 1           #fila como el número convertido a índice 
+    if 0 <= fila < tamanio and 0 <= columna < tamanio:
+        return (fila, columna)
+    return None
+
+
+def coordenada_a_texto(coordenada):
+  
+    fila, columna = coordenada
+    return f"{chr(ord('A') + columna)},{fila + 1}" #devolvemos el [Ax,1y] para mostrar al jugador
+
 class Barcos:
 	def __init__(self, longitud):
 		if longitud <= 0:
-			raise ValueError("La longitud debe ser mayor que cero")
+			raise ValueError("La longitud debe ser mayor que cero") 
 		self.longitud = longitud
 		self.impactos = 0
 
@@ -14,3 +34,90 @@ class Barcos:
 
 	def esta_hundido(self):
 		return self.impactos >= self.longitud
+    
+#-- CLASE TABLERO
+
+class Tablero:
+    def __init__(self, tamanio=TAMANIO_TABLERO):
+        self.tamanio = tamanio
+        self.casillas = [[SIMBOLO_VACIO] * tamanio for _ in range(tamanio)]
+        self.barcos = []
+        self.ocupadas = {}        # (fila, columna) -> Barco
+
+    # --- colocación -------------------------------------------------------
+    def _en_limites(self, fila, columna):
+        return 0 <= fila < self.tamanio and 0 <= columna < self.tamanio
+
+    def _hay_barco_cerca(self, fila, columna):
+        
+        for df in (-1, 0, 1):
+            for dc in (-1, 0, 1):
+                if (fila + df, columna + dc) in self.ocupadas:
+                    return True
+        return False
+
+    def puede_colocar(self, posiciones):
+        
+        return all(
+            self._en_limites(f, c) and not self._hay_barco_cerca(f, c)
+            for f, c in posiciones
+        )
+
+    def colocar_barco(self, barco, fila, columna, horizontal):
+       
+        posiciones = [
+            (fila, columna + i) if horizontal else (fila + i, columna)
+            for i in range(barco.longitud)
+        ]
+        if not self.puede_colocar(posiciones):
+            return False
+        barco.posiciones = posiciones
+        for posicion in posiciones:
+            self.ocupadas[posicion] = barco
+        self.barcos.append(barco)
+        return True
+
+    def colocar_barco_aleatorio(self, barco, intentos=1000):
+        for _ in range(intentos):
+            fila = random.randrange(self.tamanio)
+            columna = random.randrange(self.tamanio)
+            if self.colocar_barco(barco, fila, columna, random.choice([True, False])):
+                return True
+        return False
+
+    # --- disparos ---------------------------------------------------------
+    def recibir_disparo(self, coordenada):
+        
+        fila, columna = coordenada
+        if self.casillas[fila][columna] in (SIMBOLO_TOCADO, SIMBOLO_AGUA):
+            return 'error_repetido'
+
+        barco = self.ocupadas.get(coordenada)
+        if barco is None:
+            self.casillas[fila][columna] = SIMBOLO_AGUA
+            return 'disparo_agua'
+
+        barco.recibir_impacto(coordenada)
+        self.casillas[fila][columna] = SIMBOLO_TOCADO
+        return 'disparo_hundido' if barco.esta_hundido() else 'disparo_tocado'
+
+    def todos_hundidos(self):
+        return all(barco.esta_hundido() for barco in self.barcos)
+
+    # --- visualización ----------------------------------------------------
+    def mostrar(self, mostrar_barcos=False):
+        
+        letras = [chr(ord('A') + i) for i in range(self.tamanio)]
+        lineas = [
+            "      " + "   ".join(letras),
+            "    " + "----" * self.tamanio + "-",
+        ]
+        for f in range(self.tamanio):
+            fila = f"{f + 1:2d} |"
+            for c in range(self.tamanio):
+                simbolo = self.casillas[f][c]
+                if mostrar_barcos and simbolo == SIMBOLO_VACIO and (f, c) in self.ocupadas:
+                    simbolo = SIMBOLO_BARCO
+                fila += f"  {simbolo} "
+            lineas.append(fila)
+        return "\n".join(lineas)
