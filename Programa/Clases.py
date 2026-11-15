@@ -1,23 +1,6 @@
+import random
+
 from variables import *
-
-#definimos las coordenadas del tablero
-
-def texto_a_coordenada(texto, tamanio=TAMANIO_TABLERO):
-    
-    limpio = texto.strip().upper().replace(',', '').replace(' ', '')  # convertimos a mayúsculas y eliminamos espacios y comas
-    if len(limpio) < 2 or not limpio[0].isalpha() or not limpio[1:].isdigit():  #"""coordenadas alfanumericas izq numero dcha"""
-        return None
-    columna = ord(limpio[0]) - ord('A')  #columna como la letra convertida a número 
-    fila = int(limpio[1:]) - 1           #fila como el número convertido a índice 
-    if 0 <= fila < tamanio and 0 <= columna < tamanio:
-        return (fila, columna)
-    return None
-
-
-def coordenada_a_texto(coordenada):
-  
-    fila, columna = coordenada
-    return f"{chr(ord('A') + columna)},{fila + 1}" #devolvemos el [Ax,1y] para mostrar al jugador
 
 class Barcos:
 	def __init__(self, longitud):
@@ -97,7 +80,7 @@ class Tablero:
             self.casillas[fila][columna] = SIMBOLO_AGUA
             return 'disparo_agua'
 
-        barco.recibir_impacto(coordenada)
+        barco.recibir_impacto()
         self.casillas[fila][columna] = SIMBOLO_TOCADO
         return 'disparo_hundido' if barco.esta_hundido() else 'disparo_tocado'
 
