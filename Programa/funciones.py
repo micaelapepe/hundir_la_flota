@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 import variables as var
 from Clases import Barcos, Tablero
@@ -44,14 +44,9 @@ def pedir_coordenadas():
 
 
 def disparo_maquina(tablero_rival):
+    casillas = tablero_rival.casillas
 
-    libres = []  # casillas a las que todavía no se ha disparado
-
-    for fila in range(tablero_rival.tamanio):
-        for columna in range(tablero_rival.tamanio):
-            casilla = tablero_rival.casillas[fila][columna]
-            ya_disparada = casilla == var.SIMBOLO_TOCADO or casilla == var.SIMBOLO_AGUA
-            if not ya_disparada:
-                libres.append((fila, columna))
-
-    return random.choice(libres)
+    sin_disparar = ~np.isin(casillas, [var.SIMBOLO_TOCADO, var.SIMBOLO_AGUA])
+    libres = np.argwhere(sin_disparar)
+    fila, columna = libres[np.random.randint(len(libres))]
+    return int(fila), int(columna)
