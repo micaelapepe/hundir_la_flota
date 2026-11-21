@@ -44,10 +44,9 @@ def pedir_coordenadas():
 
 
 def disparo_maquina(tablero_rival):
-
     casillas = tablero_rival.casillas
 
-    sin_disparar = (casillas == var.SIMBOLO_VACIO)
+    sin_disparar = ~np.isin(casillas, [var.SIMBOLO_TOCADO, var.SIMBOLO_AGUA])
     libres = np.argwhere(sin_disparar)
     fila, columna = libres[np.random.randint(len(libres))]
     return int(fila), int(columna)
