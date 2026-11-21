@@ -1,3 +1,5 @@
+"""Funciones auxiliares del juego: preparar tableros, leer coordenadas y disparo de la máquina."""
+
 import numpy as np
 
 import variables as var
@@ -5,13 +7,21 @@ from Clases import Barcos, Tablero
 
 
 def mostrar_bienvenida():
+    """Imprime el mensaje de bienvenida y las instrucciones."""
     print(var.MENSAJES['bienvenida'])
     print(var.MENSAJES['instrucciones'])
     print()
 
 
 def preparar_tablero():
-    
+    """Crea un tablero con todos los barcos de BARCOS colocados al azar.
+
+    Coloca primero los barcos más largos. Si alguno no cabe, empieza de nuevo
+    con un tablero vacío.
+
+    Returns:
+        Tablero: tablero con todos los barcos colocados.
+    """
     while True:
         tablero = Tablero()
         # Primero los más largos: es más fácil que quepan todos
@@ -21,7 +31,11 @@ def preparar_tablero():
 
 
 def pedir_coordenadas():
+    """Pide al jugador una coordenada (por ejemplo, «A, 5») hasta que sea válida.
 
+    Returns:
+        tuple[int, int]: (fila, columna) empezando en 0.
+    """
     while True:
         texto_in = input("Introduzca las coordenadas de disparo (por ejemplo: A, 5): ")
         division = texto_in.replace(",", " ").split()
