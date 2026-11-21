@@ -7,6 +7,7 @@ TAMANIO_TABLERO = 10
 SIMBOLO_VACIO = '_'
 SIMBOLO_TOCADO = 'X'
 SIMBOLO_AGUA = 'O'
+SIMBOLO_BARCO = 'B'
 
 BARCOS = {
     'Portaaviones': 4,
