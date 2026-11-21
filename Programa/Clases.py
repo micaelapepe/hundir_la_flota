@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 from variables import *
 
@@ -23,7 +23,7 @@ class Barcos:
 class Tablero:
     def __init__(self, tamanio=TAMANIO_TABLERO):
         self.tamanio = tamanio
-        self.casillas = [[SIMBOLO_VACIO] * tamanio for _ in range(tamanio)]
+        self.casillas = np.full((tamanio, tamanio), SIMBOLO_VACIO)
         self.barcos = []
         self.ocupadas = {}        # (fila, columna) -> Barco
 
@@ -62,9 +62,10 @@ class Tablero:
 
     def colocar_barco_aleatorio(self, barco, intentos=1000):
         for _ in range(intentos):
-            fila = random.randrange(self.tamanio)
-            columna = random.randrange(self.tamanio)
-            if self.colocar_barco(barco, fila, columna, random.choice([True, False])):
+            fila = np.random.randint(self.tamanio)
+            columna = np.random.randint(self.tamanio)
+            horizontal = np.random.randint(2) == 1
+            if self.colocar_barco(barco, fila, columna, horizontal):
                 return True
         return False
 
@@ -72,16 +73,16 @@ class Tablero:
     def recibir_disparo(self, coordenada):
         
         fila, columna = coordenada
-        if self.casillas[fila][columna] in (SIMBOLO_TOCADO, SIMBOLO_AGUA):
+        if self.casillas[fila, columna] in (SIMBOLO_TOCADO, SIMBOLO_AGUA):
             return 'error_repetido'
 
         barco = self.ocupadas.get(coordenada)
         if barco is None:
-            self.casillas[fila][columna] = SIMBOLO_AGUA
+            self.casillas[fila, columna] = SIMBOLO_AGUA
             return 'disparo_agua'
 
         barco.recibir_impacto()
-        self.casillas[fila][columna] = SIMBOLO_TOCADO
+        self.casillas[fila, columna] = SIMBOLO_TOCADO
         return 'disparo_hundido' if barco.esta_hundido() else 'disparo_tocado'
 
     def todos_hundidos(self):
@@ -98,7 +99,7 @@ class Tablero:
         for f in range(self.tamanio):
             fila = f"{f + 1:2d} |"
             for c in range(self.tamanio):
-                simbolo = self.casillas[f][c]
+                simbolo = self.casillas[f, c]
                 if mostrar_barcos and simbolo == SIMBOLO_VACIO and (f, c) in self.ocupadas:
                     simbolo = SIMBOLO_BARCO
                 fila += f"  {simbolo} "
