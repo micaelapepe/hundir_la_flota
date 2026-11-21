@@ -16,15 +16,15 @@ Niveles: **0** sin IA · **1** consulta puntual, el código es nuestro · **2** 
 
 | Módulo | Quién lo ha llevado | Nivel de IA (0-3) | Nº de prompts | ¿Lo podríais repetir sin IA? (sí / en parte / no) |
 |---|---|---|---|---|
-| `variables.py` | Victor & Micaela| | | |
-| `clases.py` | Daniel | | | |
+| `variables.py` | Victor & Micaela| 0 | 0 | |
+| `clases.py` | Daniel | 1| 1  | si |
 | `funciones.py` | Raul | 1 | 1 | si |
-| `main.py` | Raul | | | |
-| `README.md` | Victor & Micaela | | | |
+| `main.py` | Raul | 1 | 1 | si |
+| `README.md` | Victor & Micaela | 0 | 0| |
 
 ## Registro de prompts
 
-- 
+- Identifica lugares donde deberíamos usar numpy en vez de python plano.
 - Escribe las Docstrings del proyecto
 
 ### Prompt 1
@@ -49,5 +49,14 @@ Niveles: **0** sin IA · **1** consulta puntual, el código es nuestro · **2** 
 - **Cambios:** clases.py y funciones.py commit 39c4e953ef75eca15f60f571ba2bf38333553db5
 Notese que no se amplicaron los cambios sugeridos tal cual. Mantuvimos nuestra estructura inicial con self.casillas, self.barcos y self.ocupadas 
 
+- **Comprobación:** Ejecutando el código tras modificarlo a mano
+- **Decisión propia:** la implementación real con numpy
+
+### Prompt 2
+
+- **Objetivo:** Nos faltan muchas docstrings y es un trabajo largo y monótono.
+- **Prompt:** Haz docstrings para todo el codigo
+- **Respuesta relevante:** 
+- **Cambios:** clases.py, funciones.py y main.py Commit 445956f4d08d888fad5920c696c44f43e12b4e97
 - **Comprobación:** Ejecutando el código tras modificarlo a mano
 - **Decisión propia:** la implementación real con numpy
