@@ -30,9 +30,8 @@ Proyecto desarrollado en equipo para el RETO nº 1, implementando el clásico ju
    
 ## 🕹️ Instrucciones del juego:
 
-1. Inscribe tu nombre como jugador.
-2. Coloca tus barcos en el tablero, cuidado y no los coloques fuera del tablero.
-3. Los barcos se sitúan en el tablero escribiendo: ("A",1)
-4. Una vez, situados todos los barcos en el tablero, dale al enter para que empiece la partida contra el ordenador.
-5. Empieza el jugador "humano" disparando contra su adversario diciendo las coordenadas de su disparo: ("A", 3).
-6. Si el jugador "humano" hunde todos los barcos del jugador "ordenador" ha ganado la partida.
+1. Coloca tus barcos en el tablero, cuidado y no los coloques fuera del tablero.
+2. Los barcos se sitúan en el tablero escribiendo: ("A",1)
+3. Una vez, situados todos los barcos en el tablero, dale al enter para que empiece la partida contra el ordenador.
+4. Empieza el jugador "humano" disparando contra su adversario diciendo las coordenadas de su disparo: ("A", 3).
+5. Si el jugador "humano" hunde todos los barcos del jugador "ordenador" ha ganado la partida.
